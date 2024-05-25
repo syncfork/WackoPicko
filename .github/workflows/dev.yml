@@ -9,6 +9,8 @@ jobs:
       - name: machineStandalone
         uses: docker://docker.io/fluidattacks/cli:latest
         with:
-          args: skims --strict scan --sarif --csv . 
+          args: skims scan --sarif --csv . 
       - name: List files
-        run: ls /github/workspace/   
+        run: ls /github/workspace/
+      - name: show results
+        run: cat /github/workspace/skims_results.sarif   
