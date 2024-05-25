@@ -1,20 +1,11 @@
 name: Standalone CLI
-
 on: [push, pull_request]
-
 jobs:
-  machineStandalone:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Setup repository as safe directory
-        run: git config --global --add safe.directory /github/workspace
-
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Run Fluid Attacks CLI
-        run: skims --restrict scan --sarif --csv ./config.yaml
-
-      - name: List files in workspace
-        run: ls -la /github/workspace/
+   machineStandalone:
+      runs-on: ubuntu-latest
+      steps:
+         - uses: actions/checkout@f095bcc56b7c2baf48f3ac70d6d6782f4f553222
+         - uses: docker://docker.io/fluidattacks/cli:latest
+         name: machineStandalone
+         with:
+            args: skims --restrict scan --sarif --csv ./config.yaml
