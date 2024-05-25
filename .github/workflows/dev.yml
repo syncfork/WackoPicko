@@ -1,20 +1,39 @@
 name: Standalone CLI
 
 on: [push, pull_request]
+
 jobs:
   machineStandalone:
     runs-on: ubuntu-latest
+
     steps:
       - name: Setup repository as safe directory
         run: git config --global --add safe.directory /github/workspace
-      - uses: actions/checkout@f095bcc56b7c2baf48f3ac70d6d6782f4f553222
-      - name: machineStandalone
-        uses: docker://docker.io/fluidattacks/cli:latest
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run Fluid Attacks CLI
+        run: |
+          docker run --rm -v $(pwd):/github/workspace -w /github/workspace docker.io/fluidattacks/cli:latest skims scan --sarif --csv ./config.yaml
+
+      - name: List files in workspace
+        run: ls -la /github/workspace/
+
+      - name: Show SARIF results
+        run: cat /github/workspace/skims_results.sarif
+
+      - name: Show CSV results
+        run: cat /github/workspace/Resultados.csv
+
+      - name: Upload SARIF results
+        uses: actions/upload-artifact@v2
         with:
-          args: skims scan --sarif --csv ./config.yaml 
-      - name: Check for SARIF file
-        run: ls /github/workspace/skims_results.sarif
-      - name: List files
-        run: ls /github/workspace/
-      - name: show results
-        run: cat /github/workspace/skims_results.sarif   
+          name: skims-results-sarif
+          path: /github/workspace/skims_results.sarif
+
+      - name: Upload CSV results
+        uses: actions/upload-artifact@v2
+        with:
+          name: skims-results-csv
+          path: /github/workspace/Resultados.csv
