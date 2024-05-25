@@ -1,4 +1,5 @@
 name: Standalone CLI
+
 on: [push, pull_request]
 jobs:
   machineStandalone:
@@ -8,4 +9,4 @@ jobs:
       - name: machineStandalone
         uses: docker://docker.io/fluidattacks/cli:latest
         with:
-          args: skims --strict scan .
+          args: skims --strict scan --csv .    
