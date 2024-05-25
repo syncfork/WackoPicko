@@ -7,13 +7,13 @@ jobs:
     steps:
       - name: Setup repository as safe directory
         run: git config --global --add safe.directory /github/workspace
-      - name: Check for SARIF file
-        run: ls /github/workspace/skims_results.sarif
       - uses: actions/checkout@f095bcc56b7c2baf48f3ac70d6d6782f4f553222
       - name: machineStandalone
         uses: docker://docker.io/fluidattacks/cli:latest
         with:
           args: skims scan --sarif --csv . 
+      - name: Check for SARIF file
+        run: ls /github/workspace/skims_results.sarif
       - name: List files
         run: ls /github/workspace/
       - name: show results
