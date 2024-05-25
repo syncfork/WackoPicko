@@ -17,9 +17,26 @@ jobs:
         run: |
           docker run --rm -v $(pwd):/github/workspace -w /github/workspace docker.io/fluidattacks/cli:latest skims scan --sarif --csv ./config.yaml
 
-      - name: Upload all results
+      - name: List files in workspace
+        run: ls -la /github/workspace/
+
+      - name: Find and move result files
+        run: |
+          find /github/workspace/ -type f -name '*.sarif' -exec cp {} /github/workspace/ \;
+          find /github/workspace/ -type f -name '*.csv' -exec cp {} /github/workspace/ \;
+
+      - name: List moved files
+        run: ls -la /github/workspace/
+
+      - name: Upload SARIF results
         uses: actions/upload-artifact@v2
         with:
-            name: scan-results
-            path: /github/workspace/
-            if-no-files-found: warn          
+          name: skims-results-sarif
+          path: /github/workspace/*.sarif
+
+      - name: Upload CSV results
+        uses: actions/upload-artifact@v2
+        with:
+          name: skims-results-csv
+          path: /github/workspace/*.csv
+          if-no-files-found: warn
