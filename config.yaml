@@ -1,0 +1,18 @@
+namespace: myapp
+output:
+  file_path: ./Resultados.csv
+  format: CSV
+working_dir: .
+language: ES
+sast:
+  include:
+    - .
+  exclude:
+    - glob(**/upload/**)
+    - glob(**/images/**)
+    - glob(**/css/**)
+sca:
+  include:
+    - .
+  exclude:
+    - glob(**/test/**)
