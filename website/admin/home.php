@@ -8,7 +8,7 @@ $admin = Admins::current_admin();
 
 ?>
 
-<h2>Welcome to the awesome admin panel for Jhon<?=h( $admin['login']) ?> </h2>
+<h2>Welcome to the awesome admin panel for Jhon home<?=h( $admin['login']) ?> </h2>
 
 <a href="<?=h( Admins::$CREATE_URL )?>">Create a new user!</a>
 
